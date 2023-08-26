@@ -102,7 +102,7 @@ use component::{
 use datatype::Dataset;
 use element::{process_raw_strings, AxisPointer, Color, MarkLine, Tooltip};
 use serde::Serialize;
-use series::Series;
+use series::{Series, Line};
 
 /**
 The chart representation.
@@ -496,6 +496,14 @@ impl Chart {
 
     pub fn series<S: Into<Series>>(mut self, series: S) -> Self {
         self.series.push(series.into());
+        self
+    }
+
+    pub fn series_multi_line<S: Into<Series>>(mut self, multi_series: Vec<Vec<f64>>) -> Self {
+        for s in multi_series {
+            let a = Line::new().data(s);
+            self.series.push(a.into());
+        }
         self
     }
 
